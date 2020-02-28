@@ -1,0 +1,3 @@
+name: EusConnectivity
+version: ${project.version}
+main: cc.eumc.eusconnectivity.EusConnectivity

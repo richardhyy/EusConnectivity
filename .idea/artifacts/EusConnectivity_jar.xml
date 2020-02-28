@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="EusConnectivity:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EusConnectivity_jar</output-path>
+    <root id="archive" name="EusConnectivity.jar">
+      <element id="module-output" name="EusConnectivity" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+    </root>
+  </artifact>
+</component>
