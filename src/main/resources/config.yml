@@ -1,0 +1,6 @@
+Settings:
+  HostName-ServerMap:
+    lobby:
+      - play.example.com
+    survival:
+      - survival.example.com
