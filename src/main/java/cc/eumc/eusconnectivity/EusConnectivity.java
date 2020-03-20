@@ -2,7 +2,8 @@ package cc.eumc.eusconnectivity;
 
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -18,9 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public final class EusConnectivity extends Plugin implements Listener {
@@ -28,6 +27,7 @@ public final class EusConnectivity extends Plugin implements Listener {
     public int maxPlayers = 0;
 
     Map<String, ServerInfo> hostServerMap = new HashMap<>();
+    Set<ProxiedPlayer> hasRedirected = new HashSet<>();
 
     @Override
     public void onEnable() {
@@ -87,12 +87,19 @@ public final class EusConnectivity extends Plugin implements Listener {
     }
 
     @EventHandler
-    public void onLogin(LoginEvent e) {
-
+    public void onDisconnect(PlayerDisconnectEvent e) {
+        hasRedirected.remove(e.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.LOW)
     public void onConnect(ServerConnectEvent e) {
+        if (hasRedirected.contains(e.getPlayer())) {
+            return;
+        }
+        else {
+            hasRedirected.add(e.getPlayer());
+        }
+
         InetSocketAddress virtualHost = e.getPlayer().getPendingConnection().getVirtualHost();
         if (virtualHost == null) return;
 
